@@ -11,17 +11,24 @@ engineConnection = Engine.connect()
 # -------------------------------------------------------
 @app.route('/')
 def greeting():
-    return "Welcome"
+    return render_template('Homepage.html')
 # --------------------------------------
 
 # ---------------------------------------------------------
-@app.route('/DataBoats')
+@app.route('/DataBoats', methods = ['GET','POST'])
 def SeeBoats():
+    iD = request.form.get('id',None)
+    name = request.form.get('name',None)
+    BoatType = request.form.get('type',None)
+    OwnerId = request.form.get('owner_id',None)
+    rentalPrice = request.form.get('rental_price',None)
+    try:
+        specificBoat = engineConnection.execute(text(f"Select id,name, type, owner_id ,rental_price from boats Where id = {iD} and name = {name} and type = {BoatType} and owner_id = {OwnerId} and rental_price = {rentalPrice}"))
     
-    BoatTbl = engineConnection.execute(text('select * from boats')).all()
-    
-    return render_template('Boat.html',boats = BoatTbl)
-
+        return render_template('Boat.html',Boats = specificBoat)
+    except:
+        BoatTbl = engineConnection.execute(text('select * from boats')).all()
+        return render_template('Boat.html',Boats = BoatTbl)
 @app.route('/Insert',methods = ['GET'])
 def insertForm():
     return render_template('Insert.html')
@@ -33,7 +40,7 @@ def CreateBoat():
         return render_template('Insert.html',error = None, success = "successful")
     except:
         return render_template('Insert.html',error = "Failed", success = None)
-
+# ------------------------------------
 @app.route('/Test/<name>')
 def DisplayHTML(name = None):
     return render_template('Base.html',person = name)
