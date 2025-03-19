@@ -12,9 +12,19 @@ engineConnection = Engine.connect()
 @app.route('/')
 def greeting():
     return render_template('Homepage.html')
-# ---------------------------Update----------------
+# --------------------------- Update ----------------
+@app.route('/UpdateBoat', methods = ['GET','POST'])
+def UpdateBoats():
+    BoatTbl = engineConnection.execute(text('select * from boats')).all()
+    try:
+        engineConnection.execute(text( "Update boats Set name = :name, type = :type, owner_id = :owner_id, rental_price = :rental_price Where id = :id"),request.form)
+        
+        return render_template('UpdateBoat.html',Error = None, success = "Success",boats = BoatTbl)
+    except:
+        return render_template('UpdateBoat.html',Error = "Failed", success = None, boats = BoatTbl)
+    
 
-# ----------------------Search-----------------------------------
+# ---------------------- Search -----------------------------------
 @app.route('/DataBoats', methods = ['GET','POST'])
 def SeeBoats():
     
@@ -42,8 +52,7 @@ def SeeBoats():
             return render_template('Boat.html',Error = "Not Found", boats = BoatTbl)
     except Exception as e:
         print(f"error: {e}")
-        BoatTbl = engineConnection.execute(text('select * from boats')).all()
-        return render_template('Boat.html',boats = BoatTbl)
+
     
 #-----------------------------------Insert----------------------------------- 
 @app.route('/Insert',methods = ['GET'])
@@ -54,9 +63,9 @@ def insertForm():
 def CreateBoat():
     try:
         engineConnection.execute(text("Insert Into boats Values (:id,:name,:type,:owner_id,:rental_price)"), request.form)
-        return render_template('Insert.html',error = None, success = "successful")
+        return render_template('Insert.html',Error = None, success = "successful")
     except:
-        return render_template('Insert.html',error = "Failed", success = None)
+        return render_template('Insert.html',Error = "Failed", success = None)
 # ------------------------------------
 @app.route('/Test/<name>')
 def DisplayHTML(name = None):
