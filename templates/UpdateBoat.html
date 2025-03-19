@@ -1,7 +1,5 @@
-{% extends "/Base.html" %}
-{% block body %}
-<h1>Boat</h1>
-<h2>Search</h2>
+{% extends '/Base.html'%}
+{% block body%}
 <form action="/DataBoats" method="POST">
     <input type="number" name="id" placeholder="ID" class="input_field"> <br>
     <input type="text" name="name" placeholder="Boat name" class="input_field"> <br>
@@ -10,35 +8,4 @@
     <input type="number" name="rental_price" placeholder="Rental price" class="input_field" step="0.001"> <br>
     <input type="submit" value="Submit" class="input_submit">
 </form>
-{% if not Error %}
-{% for boat in boats %}
-
-<ul>ID : <strong>{{boat[0]}}</strong>
- <ul>Name : {{boat[1]}} </ul>
- <ul>Type : {{boat[2]}}</ul>
- <ul>Owner ID : {{boat[3]}}</ul>
-<ul> Price : ${{boat[4]}}</ul>
-</ul>
-
-{% endfor %}
-{% else %}
-
-{{Error}}
-
-
-{% for boat in boats %}
-
-<ul>ID : <strong>{{boat[0]}}</strong>
- <ul>Name : {{boat[1]}} </ul>
- <ul>Type : {{boat[2]}}</ul>
- <ul>Owner ID : {{boat[3]}}</ul>
-<ul> Price : ${{boat[4]}}</ul>
-</ul>
-
-{% endfor %}
-
-
-
-{% endif %}
-
 {% endblock %}
