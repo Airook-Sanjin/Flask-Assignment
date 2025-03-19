@@ -1,0 +1,15 @@
+{% extends "/Base.html" %}
+{% block body %}
+<h1>Boat</h1>
+
+{% for boat in boats%}
+
+<ul>ID : <strong>{{boat[0]}}</strong>
+ <ul>Name : {{boat[1]}} </ul>
+ <ul>Type : {{boat[2]}}</ul>
+ <ul>Owner ID : {{boat[3]}}</ul>
+<ul> Price : ${{boat[4]}}</ul>
+</ul>
+
+{% endfor %}
+{% endblock %}
