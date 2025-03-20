@@ -19,7 +19,7 @@ def UpdateBoats():
     try:
         engineConnection.execute(text( "Update boats Set name = :name, type = :type, owner_id = :owner_id, rental_price = :rental_price Where id = :id"),request.form)
         BoatTbl = engineConnection.execute(text('select * from boats')).all()
-        # engineConnection.commit()
+        engineConnection.commit()
         return render_template('UpdateBoat.html',Error = None, success = "Success",boats = BoatTbl)
     except:
         return render_template('UpdateBoat.html',Error = "Failed", success = None, boats = BoatTbl)
@@ -30,7 +30,7 @@ def DeleteBoats():
     BoatTbl = engineConnection.execute(text('select * from boats')).all()
     try:
         engineConnection.execute(text( "delete from boats Where id = :id"),request.form)
-        # engineConnection.commit()
+        engineConnection.commit()
         BoatTbl = engineConnection.execute(text('select * from boats')).all()
         
         return render_template('DeleteBoat.html',Error = None, success = "Success",boats = BoatTbl)
@@ -65,6 +65,7 @@ def insertForm():
 def CreateBoat():
     try:
         engineConnection.execute(text("Insert Into boats Values (:id,:name,:type,:owner_id,:rental_price)"), request.form)
+        engineConnection.commit()
         return render_template('Insert.html',Error = None, success = "successful")
     except:
         return render_template('Insert.html',Error = "Failed", success = None)
