@@ -1,0 +1,28 @@
+{% extends '/Base.html'%}
+{% block body%}
+<section class = "Body-Container">
+
+<section class="Input-Container">
+<h2>Delete</h2>
+<form action="/DeleteBoat" method="POST">
+    <input type="number" name="id" placeholder="ID" class="input_field" required> <br>
+    
+    <input type="submit" value="Submit" class="input_submit">
+</form>
+</section>
+
+<section class = "BoatCard-Container">
+    {% for boat in boats %}
+    
+    <ul class ="BoatCard">ID : <strong>{{boat[0]}}</strong>
+     <ul>Name : {{boat[1]}} </ul>
+     <ul>Type : {{boat[2]}}</ul>
+     <ul>Owner ID : {{boat[3]}}</ul>
+    <ul> Price : ${{boat[4]}}</ul>
+    </ul>
+    
+    {% endfor %}
+    </section>
+    </section>
+
+{% endblock %}
