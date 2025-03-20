@@ -1,14 +1,12 @@
 {% extends '/Base.html'%}
 {% block body%}
 <section class = "Body-Container">
+
 <section class="Input-Container">
-<h2>Update</h2>
-<form action="/UpdateBoat" method="POST">
+<h2>Delete</h2>
+<form action="/DeleteBoat" method="POST">
     <input type="number" name="id" placeholder="ID" class="input_field" required> <br>
-    <input type="text" name="name" placeholder="Boat name" class="input_field"> <br>
-    <input type="text" name="type" placeholder="Boat type" class="input_field"> <br>
-    <input type="number" name="owner_id" placeholder="Owner ID" class="input_field"> <br>
-    <input type="number" name="rental_price" placeholder="Rental price" class="input_field" step="0.001"> <br>
+    
     <input type="submit" value="Submit" class="input_submit">
 </form>
 </section>

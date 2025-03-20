@@ -12,38 +12,38 @@ engineConnection = Engine.connect()
 @app.route('/')
 def greeting():
     return render_template('Homepage.html')
-# --------------------------- Update ----------------
+# --------------------------- UDPATE ----------------
 @app.route('/UpdateBoat', methods = ['GET','POST'])
 def UpdateBoats():
     BoatTbl = engineConnection.execute(text('select * from boats')).all()
     try:
         engineConnection.execute(text( "Update boats Set name = :name, type = :type, owner_id = :owner_id, rental_price = :rental_price Where id = :id"),request.form)
-        
+        BoatTbl = engineConnection.execute(text('select * from boats')).all()
+        # engineConnection.commit()
         return render_template('UpdateBoat.html',Error = None, success = "Success",boats = BoatTbl)
     except:
         return render_template('UpdateBoat.html',Error = "Failed", success = None, boats = BoatTbl)
     
+# ------------------DELETE-----------------------------------
+@app.route('/DeleteBoat', methods = ['GET','POST'])
+def DeleteBoats():
+    BoatTbl = engineConnection.execute(text('select * from boats')).all()
+    try:
+        engineConnection.execute(text( "delete from boats Where id = :id"),request.form)
+        # engineConnection.commit()
+        BoatTbl = engineConnection.execute(text('select * from boats')).all()
+        
+        return render_template('DeleteBoat.html',Error = None, success = "Success",boats = BoatTbl)
+    except:
+        return render_template('DeleteBoat.html',Error = "Failed", success = None, boats = BoatTbl)
 
 # ---------------------- Search -----------------------------------
 @app.route('/DataBoats', methods = ['GET','POST'])
 def SeeBoats():
     
     print("SeeBoats route called")
-    iD = request.form.get('id',type=int)
-    name = request.form.get('name')
-    BoatType = request.form.get('type')
-    OwnerId = request.form.get('owner_id',type = int)
-    rentalPrice = request.form.get('rental_price',type = float)
-    print(f"Form Inputs: id={iD}, name={name}, type={BoatType}, owner_id={OwnerId}, rental_price={rentalPrice}")
-    print(f"Request Form Data: {request.form}")
     try:
-        specificBoat = engineConnection.execute(text("Select id,name, type, owner_id ,rental_price from boats Where (:id is NULL OR id = :id) and (:name is NULL OR name = :name) and (:type is NULL Or type = :type) And (:owner_id is NULL OR owner_id = :owner_id) And (:rental_price is NULL OR rental_price = :rental_price)"), {
-            'id':iD,
-            'name':name,
-            'type':BoatType,
-            'owner_id':OwnerId,
-            'rental_price': rentalPrice
-        }).all()
+        specificBoat = engineConnection.execute(text("Select id,name, type, owner_id ,rental_price from boats Where :id is NULL OR id = :id"),request.form ).all()
         print(f"Query Results: {specificBoat}")
         if specificBoat: 
             return render_template('Boat.html',Error = None, boats = specificBoat)
@@ -52,6 +52,8 @@ def SeeBoats():
             return render_template('Boat.html',Error = "Not Found", boats = BoatTbl)
     except Exception as e:
         print(f"error: {e}")
+        BoatTbl = engineConnection.execute(text('select * from boats')).all()
+        return render_template('Boat.html', boats = BoatTbl)
 
     
 #-----------------------------------Insert----------------------------------- 

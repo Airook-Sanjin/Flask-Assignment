@@ -1,34 +1,22 @@
 {% extends "/Base.html" %}
 {% block body %}
-<h1>Boat</h1>
+<section class = "Body-Container">
+
+<section class="Input-Container">
 <h2>Search</h2>
 <form action="/DataBoats" method="POST">
     <input type="number" name="id" placeholder="ID" class="input_field"> <br>
-    <input type="text" name="name" placeholder="Boat name" class="input_field"> <br>
-    <input type="text" name="type" placeholder="Boat type" class="input_field"> <br>
-    <input type="number" name="owner_id" placeholder="Owner ID" class="input_field"> <br>
-    <input type="number" name="rental_price" placeholder="Rental price" class="input_field" step="0.001"> <br>
-    <input type="submit" value="Submit" class="input_submit">
+    <input type="submit" value="Search" class="input_submit">
 </form>
-{% if not Error %}
-{% for boat in boats %}
+</section>
+{% if Error %}
+<h1>Not Found</h1>
 
-<ul>ID : <strong>{{boat[0]}}</strong>
- <ul>Name : {{boat[1]}} </ul>
- <ul>Type : {{boat[2]}}</ul>
- <ul>Owner ID : {{boat[3]}}</ul>
-<ul> Price : ${{boat[4]}}</ul>
-</ul>
-
-{% endfor %}
 {% else %}
-
-{{Error}}
-
-
+<section class = "BoatCard-Container">
 {% for boat in boats %}
 
-<ul>ID : <strong>{{boat[0]}}</strong>
+<ul class ="BoatCard">ID : <strong>{{boat[0]}}</strong>
  <ul>Name : {{boat[1]}} </ul>
  <ul>Type : {{boat[2]}}</ul>
  <ul>Owner ID : {{boat[3]}}</ul>
@@ -36,9 +24,8 @@
 </ul>
 
 {% endfor %}
-
-
-
+</section>
+</section>
 {% endif %}
 
 {% endblock %}
